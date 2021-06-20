@@ -1,6 +1,7 @@
 ﻿module Printer
 
 open System
+open System.Text.RegularExpressions
 open Ast
 open Options.Globals
 
@@ -48,8 +49,10 @@ module private PrinterImpl =
     let floatToS f =
         let si = if f < 0. then "-" else ""
         let test = out "%g" (abs f)
+        // %g outputs 1e-06 instead of 1e-6
+        if test.Contains("e") then si + Regex.Replace(test.Replace("e+", "e"), "^(.*e[-]?)?(0+)(.*)$", "$1$3")
         // display "3." instead of "3"
-        if fst (System.Int32.TryParse test) then (out "%g." f)
+        elif fst (System.Int32.TryParse test) then (out "%g." f)
         // display ".5" instead of "0.5"
         else if test.[0] = '0' then si + (test.[1..])
         else si + test
@@ -241,6 +244,8 @@ module private PrinterImpl =
             else topLevelToS x
 
         tl |> List.map f |> String.concat ""
+
+let floatToS = PrinterImpl.floatToS
 
 let print tl = 
     PrinterImpl.outputFormat <- options.outputFormat

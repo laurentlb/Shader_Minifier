@@ -34,7 +34,7 @@ const char *lunaquatic_frag =
  "{"
    "int x=int(v.x*40.+v.y*6400.);"
    "x=x<<13^x;"
-   "return 1.-float(x*(x*x*15731+789221)+1376312589&2147483647)/1.07374e+09;"
+   "return 1.-float(x*(x*x*15731+789221)+1376312589&2147483647)/1.07374e9;"
  "}"
  "float p(float z)"
  "{"

@@ -42,6 +42,21 @@ let canBeCompiled content =
             printfn "compilation failed: %s" info
             false
 
+let testFloatToS () =
+    let input = "1. 10. 100. 1000. 10000. 1000000. 1e+123 0.1 0.01 0.001 0.0001 0.000001 1e-123 -1. -10. -100. -1000. -10000. -1000000. -1e+123 -0.1 -0.01 -0.001 -0.0001 -0.000001 -1e-123".Split(" ")
+    let expected = "1. 10. 100. 1000. 10000. 1e6 1e123 .1 .01 .001 .0001 1e-6 1e-123 -1. -10. -100. -1000. -10000. -1e6 -1e123 -.1 -.01 -.001 -.0001 -1e-6 -1e-123"
+    //let expected = "1. 10. 1e2 1e3 1e4 1e6 1e123 .1 .01 1e-3 1e-4 1e-6 1e-123 -1. -10. -1e2 -1e3 -1e4 -1e6 -1e123 -.1 -.01 -1e-3 -1e-4 -1e-6 -1e-123"
+    // TODO: Make a better floatToS.
+    let actual = input |> Array.map float
+                 |> Array.map Printer.floatToS
+    let a = String.Join(" ", actual)
+    if a = expected then
+        printfn "%s" "Success: floatToS"
+        0
+    else
+        printfn "Failure.\nExpected: %s\nActual:   %s" expected a
+        1
+
 let doMinify content =
     let arr = Main.minify [|"input", content|] |> fst |> Array.map (fun s -> s.code)
     Printer.printText arr.[0]
@@ -112,18 +127,27 @@ let testGolden () =
 let main argv =
     //ignore(runCommand("--no-renaming --format c-array -o tests/unit/minus-zero.expected tests/unit/minus-zero.frag".Split([|' '|]))); exit 0
     initOpenTK()
-    let mutable failures = testGolden()
+
+    printfn "%s" "Unit tests:"
+    let mutable failures = testFloatToS()
+
+    printfn "%s" "Golden tests:"
+    failures <- failures + testGolden()
+
+    printfn "%s" "GL Compile tests:"
     if not(options.init([|"--format"; "text"; "fake.frag"|])) then failwith "init failed"
     let unitTests = Directory.GetFiles("tests/unit", "*.frag")
     let realTests = Directory.GetFiles("tests/real", "*.frag");
     for f in unitTests do
         if not (testMinifyAndCompile f) then
             failures <- failures + 1
+
+    printfn "%s" "Performance tests:"
     testPerformance (Seq.concat [realTests; unitTests] |> Seq.toArray)
     if failures = 0 then
         printfn "All good."
     else
         printfn "%d failures." failures
-    
+
     //System.Console.ReadLine() |> ignore
     if failures = 0 then 0 else 1

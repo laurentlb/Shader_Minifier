@@ -48,7 +48,7 @@ const char *yx_long_way_from_home_frag =
  "}"
  "float m(vec3 m)"
  "{"
-   "float x=1e+09;"
+   "float x=1e9;"
    "x=min(x,length(m-vec3(0,5,0))-2.5);"
    "vec3 i=m;"
    "i.x=abs(i.x-1.1)-.2;"

@@ -207,7 +207,7 @@ const char *the_real_party_is_in_your_pocket_frag =
            "{"
              "k=x(r+p*b);"
              "d=k.x;"
-             "if(b>o.y||abs(d)<1e-05)"
+             "if(b>o.y||abs(d)<1e-5)"
                "break;"
              "b+=d;"
            "}"

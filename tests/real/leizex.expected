@@ -29,7 +29,7 @@ _leizex_frag:
 	db       'for(int i=-1;i<=1;i++)'
 	db         '{'
 	db           'int nn=ip.x+i+57*(ip.y+j)+113*(ip.z+k);'
-	db           'vec3 di=vec3(float(i),float(j),float(k))-f+vec3(coolfFunc3d2(nn),coolfFunc3d2(nn+1217),coolfFunc3d2(nn+2513))/2.14748e+09;'
+	db           'vec3 di=vec3(float(i),float(j),float(k))-f+vec3(coolfFunc3d2(nn),coolfFunc3d2(nn+1217),coolfFunc3d2(nn+2513))/2.14748e9;'
 	db           'float d2=dot(di,di);'
 	db           'if(d2<dmin.x)'
 	db             'dmin.y=dmin.x,dmin.x=d2;'
@@ -105,4 +105,3 @@ _leizex_frag:
 	db   'col*=.5+.5*(1.-p.x)*(1.+p.x);'
 	db   'gl_FragColor=vec4(col,1.);'
 	db '}', 0
-

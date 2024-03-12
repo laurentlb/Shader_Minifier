@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="main.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Argu">
+      <HintPath>..\lib\Argu.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\lib\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK">
+      <HintPath>..\lib\OpenTK.dll</HintPath>
+    </Reference>
+    <ProjectReference Include="..\shader-minifier-linux.fsproj">
+      <Name>Shader Minifier Library</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>

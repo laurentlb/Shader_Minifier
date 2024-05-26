@@ -320,6 +320,30 @@ them all at the same time by listing them all on the command-line.
 - [Renaming](TRANSFORMATIONS.md#Renaming)
 
 
+
+## Current limitations
+
+- Macros can arbitrarily change the code. Shader Minifier does not try to
+  take into account how the future effects of macro expansion interact
+  with minification, and assumes that the source code is valid and can be
+  understood and minified before macro expansion. This can result in
+  minification breaking the code.
+
+- Function overloading is not well supported yet, in particular when the
+  number of arguments is not enough to disambiguate.
+
+- In the context of demoscene, the compressed size of a shader is more
+  important than the uncompressed size. As a result, Shader Minifier makes
+  some assumptions that favor minimizing the compressed size of the minified
+  shader. In some cases, the uncompressed size of the output the can end up
+  larger than the input.
+
+- Shader Minifier tries to support GLSL and HLSL. Supporting similar but
+  different languages means that it's not always possible to take full
+  advantage of all minification possibilities, and that the less often used
+  corners of a language might have undetected bugs.
+
+
 ## Feedback
 
 Please give feedback in the [bugtracker](https://github.com/laurentlb/Shader_Minifier/issues).
